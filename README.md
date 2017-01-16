@@ -26,6 +26,8 @@ The following helpers are available:
 
 `:HugoHelperLink` helps with adding links to a document. Visually select the word(s) you want to be a link, enter `:HugoHelperLink https://gohugo.io` and it will turn the selected word(s) to `[selected words](https://gohugo.io)`.
 
+![link helper in action](./hugo-helper-link.gif)
+
 Probably works only for markdown documents.
 
 # Installation
