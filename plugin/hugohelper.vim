@@ -9,6 +9,7 @@ command! -nargs=0 HugoHelperDraft call hugohelper#HugoHelperDraft()
 command! -nargs=0 HugoHelperUndraft call hugohelper#HugoHelperUndraft()
 command! -nargs=0 HugoHelperDateIsNow call hugohelper#HugoHelperDateIsNow()
 command! -nargs=1 HugoHelperHighlight call hugohelper#HugoHelperHighlight(<f-args>)
+command! -range -nargs=1 HugoHelperLink call hugohelper#HugoHelperLink(<f-args>)
 
 function! HugoHelperFrontMatterReorder()
     exe 'g/^draft/m 1'

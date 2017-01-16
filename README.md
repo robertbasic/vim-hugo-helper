@@ -22,6 +22,12 @@ The following helpers are available:
 
 `:HugoHelperHighlight language` inserts the `highlight` block for "language" in to the current post.
 
+## Link
+
+`:HugoHelperLink` helps with adding links to a document. Visually select the word(s) you want to be a link, enter `:HugoHelperLink https://gohugo.io` and it will turn the selected word(s) to `[selected words](https://gohugo.io)`.
+
+Probably works only for markdown documents.
+
 # Installation
 
 Using [vim-plug](https://github.com/junegunn/vim-plug):
