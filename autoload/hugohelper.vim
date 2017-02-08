@@ -1,3 +1,7 @@
+function! hugohelper#HugoHelperSpellCheck()
+    exe "setlocal spell! spelllang=" . g:hugohelper_spell_check_lang
+endfun
+
 function! hugohelper#HugoHelperDraft()
     exe 'g/^draft/s/false/true'
 endfun

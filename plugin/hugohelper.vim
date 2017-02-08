@@ -5,6 +5,11 @@ let g:hugohelper_plugin_loaded = 1
 
 let g:hugohelper_plugin_path = expand('<sfile>:p:h')
 
+if !exists('g:hugohelper_spell_check_lang')
+    let g:hugohelper_spell_check_lang = 'en_us'
+endif
+
+command! -nargs=0 HugoHelperSpellCheck call hugohelper#HugoHelperSpellCheck()
 command! -nargs=0 HugoHelperDraft call hugohelper#HugoHelperDraft()
 command! -nargs=0 HugoHelperUndraft call hugohelper#HugoHelperUndraft()
 command! -nargs=0 HugoHelperDateIsNow call hugohelper#HugoHelperDateIsNow()

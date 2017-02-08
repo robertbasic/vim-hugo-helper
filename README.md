@@ -30,6 +30,18 @@ The following helpers are available:
 
 Probably works only for markdown documents.
 
+## Spell check
+
+`:HugoHelperSpellCheck` toggles the spell check for the current language.
+
+You can set the language by setting the following in your `.vimrc` file:
+
+```
+let g:hugohelper_spell_check_lang = 'en_us'
+```
+
+By default it is set to `en_us`.
+
 # Installation
 
 Using [vim-plug](https://github.com/junegunn/vim-plug):
