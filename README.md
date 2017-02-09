@@ -42,6 +42,32 @@ let g:hugohelper_spell_check_lang = 'en_us'
 
 By default it is set to `en_us`.
 
+## Title to slug
+
+`:HugoHelperTitleToSlug` turns the title of the Hugo post to the slug. It assumes the following two lines are present in the frontmatter:
+
+```
++++
+// frontmatter
+title = "Title of the post"
+// frontmatter
+slug = ""
+// frontmatter
++++
+```
+
+It will turn it into:
+
+```
++++
+// frontmatter
+title = "Title of the post"
+// frontmatter
+slug = "title-of-the-post"
+// frontmatter
++++
+```
+
 # Installation
 
 Using [vim-plug](https://github.com/junegunn/vim-plug):

@@ -2,6 +2,17 @@ function! hugohelper#HugoHelperSpellCheck()
     exe "setlocal spell! spelllang=" . g:hugohelper_spell_check_lang
 endfun
 
+function! hugohelper#HugoHelperTitleToSlug()
+    normal gg
+    exe '/^title'
+    normal! vi"y
+    exe '/^slug'
+    normal! f"pVu
+    " Not sure why I can't make \%V work here
+    exe ':s/ /-/g'
+    exe 'normal! f-r f-r '
+endfun
+
 function! hugohelper#HugoHelperDraft()
     exe 'g/^draft/s/false/true'
 endfun

@@ -13,6 +13,7 @@ command! -nargs=0 HugoHelperSpellCheck call hugohelper#HugoHelperSpellCheck()
 command! -nargs=0 HugoHelperDraft call hugohelper#HugoHelperDraft()
 command! -nargs=0 HugoHelperUndraft call hugohelper#HugoHelperUndraft()
 command! -nargs=0 HugoHelperDateIsNow call hugohelper#HugoHelperDateIsNow()
+command! -nargs=0 HugoHelperTitleToSlug call hugohelper#HugoHelperTitleToSlug()
 command! -nargs=1 HugoHelperHighlight call hugohelper#HugoHelperHighlight(<f-args>)
 command! -range -nargs=1 HugoHelperLink call hugohelper#HugoHelperLink(<f-args>)
 
