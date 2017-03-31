@@ -25,7 +25,7 @@ function! hugohelper#HugoHelperDateIsNow()
     exe 'g/^date/s/".*"/\=strftime("%FT%T%z")/'
     normal! $a"
     normal! Bi"
-    normal! f+2la:
+    normal! $3ha:
 endfun
 
 function! hugohelper#HugoHelperHighlight(language)
