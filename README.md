@@ -70,6 +70,10 @@ slug = "title-of-the-post"
 
 # Installation
 
-Using [vim-plug](https://github.com/junegunn/vim-plug):
+## [vim-plug](https://github.com/junegunn/vim-plug)
 
 `Plug 'robertbasic/vim-hugo-helper'`
+
+## [Vundle](https://github.com/VundleVim/Vundle.vim)
+
+`PluginInstall 'robertbasic/vim-hugo-helper'`
