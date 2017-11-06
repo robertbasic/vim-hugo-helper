@@ -24,6 +24,7 @@ endfun
 function! hugohelper#HugoHelperDateIsNow()
     exe 'g/^date.*/s//\=strftime("%FT%T%z")/'
     normal! Idate = 
+    normal! $2ha:
 endfun
 
 function! hugohelper#HugoHelperHighlight(language)
