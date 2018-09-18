@@ -14,16 +14,44 @@ function! hugohelper#HugoHelperTitleToSlug()
 endfun
 
 function! hugohelper#HugoHelperDraft()
-    exe 'g/^draft/s/false/true'
+    let l:format = s:front_matter_format()
+    if l:format == 'toml'
+        exe 'g/^draft\s*=/s/false/true'
+    elseif l:format == 'yaml'
+        " YAML supports several boolean symbols: Yes, No, Y, N, Off, On, True, False, and
+        " and is case insensitive.
+        " http://yaml.org/refcard.html
+        exe 'silent! g/^draft\s*:/s/false/true/i'
+        exe 'silent! g/^draft\s*:/s/no/yes/i'
+        exe 'silent! g/^draft\s*:/s/off/on/i'
+        exe 'silent! g/^draft\s*:\s*n\s*/s/n/y/i'
+    endif
 endfun
 
 function! hugohelper#HugoHelperUndraft()
-    exe 'g/^draft/s/true/false'
+    let l:format = s:front_matter_format()
+    if l:format == 'toml'
+        exe 'g/^draft\s*=/s/true/false'
+    elseif l:format == 'yaml'
+        " YAML supports several boolean symbols: Yes, No, Y, N, Off, On, True, False, and
+        " and is case insensitive.
+        " http://yaml.org/refcard.html
+        exe 'silent! g/^draft\s*:/s/true/false/i'
+        exe 'silent! g/^draft\s*:/s/yes/no/i'
+        exe 'silent! g/^draft\s*:/s/on/off/i'
+        exe 'silent! g/^draft\s*:\s*y\s*/s/y/n/i'
+    endif
 endfun
 
 function! hugohelper#HugoHelperDateIsNow()
-    exe 'g/^date.*/s//\=strftime("%FT%T%z")/'
-    normal! Idate = 
+    let l:format = s:front_matter_format()
+    if l:format == 'toml'
+        exe 'g/^date\s*=.*/s//\=strftime("%FT%T%z")/'
+        normal! Idate = 
+    elseif l:format == 'yaml'
+        exe 'g/^date\s*:.*/s//\=strftime("%FT%T%z")/'
+        normal! Idate: 
+    endif
     normal! $2ha:
 endfun
 
@@ -49,4 +77,15 @@ function! hugohelper#get_visual_selection()
 	let lines[-1] = lines[-1][: col2 - (&selection == 'inclusive' ? 1 : 2)]
 	let lines[0] = lines[0][col1 - 1:]
     return join(lines, "\n")
+endfun
+
+function! s:front_matter_format()
+    let l:line = getline(1)
+    if l:line =~ '+++'
+        return 'toml'
+    elseif l:line =~ '---'
+        return 'yaml'
+    else
+        throw "Could not determine Hugo front matter format. Looking for +++ or ---. JSON not supported."
+    endif
 endfun
