@@ -47,10 +47,10 @@ function! hugohelper#HugoHelperDateIsNow()
     let l:format = s:front_matter_format()
     if l:format == 'toml'
         exe 'g/^date\s*=.*/s//\=strftime("%FT%T%z")/'
-        normal! Idate = 
+        exe 'normal! Idate = '
     elseif l:format == 'yaml'
         exe 'g/^date\s*:.*/s//\=strftime("%FT%T%z")/'
-        normal! Idate: 
+        exe 'normal! Idate: '
     endif
     normal! $2ha:
 endfun
