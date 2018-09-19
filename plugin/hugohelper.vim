@@ -13,6 +13,19 @@ if !exists('g:hugohelper_update_lastmod_on_write')
     let g:hugohelper_update_lastmod_on_write = 0
 endif
 
+if !exists('g:hugohelper_content_dir')
+    let g:hugohelper_content_dir = 'content'
+endif
+
+if !exists('g:hugohelper_site_config')
+    " List of site configuration files vim-hugo-helper uses to detemine
+    " the root of the hugo site.
+    " For more information, see: https://gohugo.io/getting-started/configuration/
+    let g:hugohelper_site_config = [ 'config.toml', 'config.yaml', 'config.json' ]
+endif
+
+
+
 command! -nargs=0 HugoHelperSpellCheck call hugohelper#SpellCheck()
 command! -nargs=0 HugoHelperDraft call hugohelper#Draft()
 command! -nargs=0 HugoHelperUndraft call hugohelper#Undraft()
@@ -49,31 +62,47 @@ endfunction
 
 function! s:ShouldUpdateLastMod()
     if !g:hugohelper_update_lastmod_on_write
-        return 0
+        return v:false
     endif
 
     if hugohelper#HasFrontMatter() == 0
-        return 0
+        return v:false
     endif
 
     " Only update lastmod in markdown in the content directory. In particular, archetypes
     " should not be automatically updated.
-    return s:IsFileInDirectory(expand('<afile>'), 'content')
+    return s:IsFileInHugoContentDirectory(expand('<afile>'))
 endfunction
 
-function! s:IsFileInDirectory(file, dir)
-    let l:tail = fnamemodify(a:file, ":t")
-    if l:tail == a:dir
-        " found
-        return 1
-    elseif empty(l:tail)
-        " not found
-        return 0
-    endif
+function! s:IsFileInHugoContentDirectory(filepath)
+    let l:mods = ':p:h'
+    let l:dirname = 'dummy'
+    while !empty(l:dirname)
+        let l:path = fnamemodify(a:filepath, l:mods)
+        let l:mods .= ':h'
+        let l:dirname = fnamemodify(l:path, ':t')
+        if l:dirname == g:hugohelper_content_dir
+            " Check if the parent of the content directory contains a config file.
+            let l:parent = fnamemodify(l:path, ":h")
+            if s:HasHugoConfigFile(l:parent)
+                return v:true
+            endif
+        endif
+    endwhile
 
-    " recurse
-    let l:head = fnamemodify(a:file, ":h")
-    return s:IsFileInDirectory(l:head, a:dir)
+    return v:false
+endfunction
+
+function! s:HasHugoConfigFile(dir)
+    " :p adds the final path separator if a:dir is a directory.
+    let l:dirpath = fnamemodify(a:dir, ':p')
+    for config in g:hugohelper_site_config
+        let l:file = l:dirpath . config
+        if filereadable(l:file)
+            return v:true
+        endif
+    endfor
+    return v:false
 endfunction
 
 " vim: expandtab shiftwidth=4
