@@ -1,5 +1,5 @@
 if exists('g:hugohelper_plugin_loaded') || &cp
-  finish
+    finish
 endif
 let g:hugohelper_plugin_loaded = 1
 
