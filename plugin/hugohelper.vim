@@ -30,3 +30,5 @@ function! HugoHelperFrontMatterReorder()
     exe ':9'
     exe ':s/.*\(\d\{4\}\)-\(\d\{2\}\).*/\1 = ["\2"]'
 endfun
+
+" vim: expandtab shiftwidth=4

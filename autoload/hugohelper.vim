@@ -89,3 +89,5 @@ function! s:front_matter_format()
         throw "Could not determine Hugo front matter format. Looking for +++ or ---. JSON not supported."
     endif
 endfun
+
+" vim: expandtab shiftwidth=4
