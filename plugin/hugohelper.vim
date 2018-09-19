@@ -37,20 +37,43 @@ function! HugoHelperFrontMatterReorder()
 endfun
 
 augroup vim-hugo-helper
-    autocmd BufWritePre *.md call s:autosave()
+    autocmd BufWritePre *.md call s:UpdateLastMod()
 augroup end
 
 " Update lastmod on save.
-function! s:autosave()
-    if g:hugohelper_update_lastmod_on_write
-        let l:isHugoFile = hugohelper#HasFrontMatter()
-        if l:isHugoFile == 1
-            echom "lastmod is now"
-            call hugohelper#LastmodIsNow()
-        else
-            echom "nope"
-        end
+function! s:UpdateLastMod()
+    if s:ShouldUpdateLastMod()
+        call hugohelper#LastmodIsNow()
     endif
+endfunction
+
+function! s:ShouldUpdateLastMod()
+    if !g:hugohelper_update_lastmod_on_write
+        return 0
+    endif
+
+    if hugohelper#HasFrontMatter() == 0
+        return 0
+    endif
+
+    " Only update lastmod in markdown in the content directory. In particular, archetypes
+    " should not be automatically updated.
+    return s:IsFileInDirectory(expand('<afile>'), 'content')
+endfunction
+
+function! s:IsFileInDirectory(file, dir)
+    let l:tail = fnamemodify(a:file, ":t")
+    if l:tail == a:dir
+        " found
+        return 1
+    elseif empty(l:tail)
+        " not found
+        return 0
+    endif
+
+    " recurse
+    let l:head = fnamemodify(a:file, ":h")
+    return s:IsFileInDirectory(l:head, a:dir)
 endfunction
 
 " vim: expandtab shiftwidth=4
