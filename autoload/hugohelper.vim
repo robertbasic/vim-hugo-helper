@@ -43,16 +43,24 @@ function! hugohelper#HugoHelperUndraft()
     endif
 endfun
 
-function! hugohelper#HugoHelperDateIsNow()
+function! s:date_is_now(key)
     let l:format = s:front_matter_format()
     if l:format == 'toml'
-        exe 'g/^date\s*=.*/s//\=strftime("%FT%T%z")/'
-        exe 'normal! Idate = '
+        exe 'g/^' . a:key . '\s*=.*/s//\=strftime("%FT%T%z")/'
+        exe 'normal! I' . a:key . ' = '
     elseif l:format == 'yaml'
-        exe 'g/^date\s*:.*/s//\=strftime("%FT%T%z")/'
-        exe 'normal! Idate: '
+        exe 'g/^' . a:key . '\s*:.*/s//\=strftime("%FT%T%z")/'
+        exe 'normal! I' . a:key . ': '
     endif
     normal! $2ha:
+endfun
+
+function! hugohelper#HugoHelperDateIsNow()
+    call s:date_is_now( 'date')
+endfun
+
+function! hugohelper#HugoHelperLastmodIsNow()
+    call s:date_is_now('lastmod')
 endfun
 
 function! hugohelper#HugoHelperHighlight(language)
