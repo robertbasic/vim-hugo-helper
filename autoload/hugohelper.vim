@@ -43,6 +43,15 @@ function! hugohelper#Link(link)
     exe "normal! gv\ef)"
 endfun
 
+function! hugohelper#HasFrontMatter()
+    try
+        call s:front_matter_format()
+        return 1
+    catch
+    endtry
+    return 0
+endfun
+
 function! s:get_visual_selection()
     " From http://stackoverflow.com/a/6271254/794380
     let [lnum1, col1] = getpos("'<")[1:2]

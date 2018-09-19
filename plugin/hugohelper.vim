@@ -9,6 +9,10 @@ if !exists('g:hugohelper_spell_check_lang')
     let g:hugohelper_spell_check_lang = 'en_us'
 endif
 
+if !exists('g:hugohelper_update_lastmod_on_write')
+    let g:hugohelper_update_lastmod_on_write = 0
+endif
+
 command! -nargs=0 HugoHelperSpellCheck call hugohelper#SpellCheck()
 command! -nargs=0 HugoHelperDraft call hugohelper#Draft()
 command! -nargs=0 HugoHelperUndraft call hugohelper#Undraft()
@@ -31,5 +35,22 @@ function! HugoHelperFrontMatterReorder()
     exe ':9'
     exe ':s/.*\(\d\{4\}\)-\(\d\{2\}\).*/\1 = ["\2"]'
 endfun
+
+augroup vim-hugo-helper
+    autocmd BufWritePre *.md call s:autosave()
+augroup end
+
+" Update lastmod on save.
+function! s:autosave()
+    if g:hugohelper_update_lastmod_on_write
+        let l:isHugoFile = hugohelper#HasFrontMatter()
+        if l:isHugoFile == 1
+            echom "lastmod is now"
+            call hugohelper#LastmodIsNow()
+        else
+            echom "nope"
+        end
+    endif
+endfunction
 
 " vim: expandtab shiftwidth=4
