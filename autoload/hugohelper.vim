@@ -13,53 +13,20 @@ function! hugohelper#HugoHelperTitleToSlug()
     exe 'normal! f-r f-r '
 endfun
 
-function! s:yaml_set_key(key, value)
-    " Assume yaml mode has been detected, which means line 1 is the starting
-    " --- marker. Search for the key only in the range of the yaml markers.
-    exe '1;/---/substitute/^' . a:key . '\s*:.*/' . a:key . ': ' . a:value
-endfun
-
 function! hugohelper#HugoHelperDraft()
-    let l:format = s:front_matter_format()
-    if l:format == 'toml'
-        exe 'g/^draft\s*=/s/false/true'
-    elseif l:format == 'yaml'
-        call s:yaml_set_key('draft', 'true')
-    endif
+    call s:set_key('draft', 'true')
 endfun
 
 function! hugohelper#HugoHelperUndraft()
-    let l:format = s:front_matter_format()
-    if l:format == 'toml'
-        exe 'g/^draft\s*=/s/true/false'
-    elseif l:format == 'yaml'
-        call s:yaml_set_key('draft', 'false')
-    endif
-endfun
-
-function! s:hugo_now()
-    " Contrust a time string using the format: 2018-09-18T19:41:32-07:00
-    let l:time = strftime("%FT%T%z")
-    return l:time[:-3] . ':' . l:time[-2:]
-endfun
-
-function! s:date_is_now(key)
-    let l:format = s:front_matter_format()
-    if l:format == 'toml'
-        exe 'g/^' . a:key . '\s*=.*/s//\=strftime("%FT%T%z")/'
-        exe 'normal! I' . a:key . ' = '
-        normal! $2ha:
-    elseif l:format == 'yaml'
-        call s:yaml_set_key(a:key, s:hugo_now())
-    endif
+    call s:set_key('draft', 'false')
 endfun
 
 function! hugohelper#HugoHelperDateIsNow()
-    call s:date_is_now( 'date')
+    call s:set_key('date', s:hugo_now())
 endfun
 
 function! hugohelper#HugoHelperLastmodIsNow()
-    call s:date_is_now('lastmod')
+    call s:set_key('lastmod', s:hugo_now())
 endfun
 
 function! hugohelper#HugoHelperHighlight(language)
@@ -95,6 +62,23 @@ function! s:front_matter_format()
     else
         throw "Could not determine Hugo front matter format. Looking for +++ or ---. JSON not supported."
     endif
+endfun
+
+function! s:set_key(key, value)
+    let l:format = s:front_matter_format()
+    if l:format == 'toml'
+        exe '1;/+++/substitute/^' . a:key . '\s*=.*/' . a:key . ' = ' . a:value
+    elseif l:format == 'yaml'
+        exe '1;/---/substitute/^' . a:key . '\s*:.*/' . a:key . ': ' . a:value
+    else
+        throw "Can't set key, value pair for unknown format " . l:format
+    endif
+endfun
+
+function! s:hugo_now()
+    " Contrust a time string using the format: 2018-09-18T19:41:32-07:00
+    let l:time = strftime("%FT%T%z")
+    return l:time[:-3] . ':' . l:time[-2:]
 endfun
 
 " vim: expandtab shiftwidth=4
