@@ -9,14 +9,14 @@ if !exists('g:hugohelper_spell_check_lang')
     let g:hugohelper_spell_check_lang = 'en_us'
 endif
 
-command! -nargs=0 HugoHelperSpellCheck call hugohelper#HugoHelperSpellCheck()
-command! -nargs=0 HugoHelperDraft call hugohelper#HugoHelperDraft()
-command! -nargs=0 HugoHelperUndraft call hugohelper#HugoHelperUndraft()
-command! -nargs=0 HugoHelperDateIsNow call hugohelper#HugoHelperDateIsNow()
-command! -nargs=0 HugoHelperLastmodIsNow call hugohelper#HugoHelperLastmodIsNow()
-command! -nargs=0 HugoHelperTitleToSlug call hugohelper#HugoHelperTitleToSlug()
-command! -nargs=1 HugoHelperHighlight call hugohelper#HugoHelperHighlight(<f-args>)
-command! -range -nargs=1 HugoHelperLink call hugohelper#HugoHelperLink(<f-args>)
+command! -nargs=0 HugoHelperSpellCheck call hugohelper#SpellCheck()
+command! -nargs=0 HugoHelperDraft call hugohelper#Draft()
+command! -nargs=0 HugoHelperUndraft call hugohelper#Undraft()
+command! -nargs=0 HugoHelperDateIsNow call hugohelper#DateIsNow()
+command! -nargs=0 HugoHelperLastmodIsNow call hugohelper#LastmodIsNow()
+command! -nargs=0 HugoHelperTitleToSlug call hugohelper#TitleToSlug()
+command! -nargs=1 HugoHelperHighlight call hugohelper#Highlight(<f-args>)
+command! -range -nargs=1 HugoHelperLink call hugohelper#Link(<f-args>)
 
 function! HugoHelperFrontMatterReorder()
     exe 'g/^draft/m 1'

@@ -1,8 +1,8 @@
-function! hugohelper#HugoHelperSpellCheck()
+function! hugohelper#SpellCheck()
     exe "setlocal spell! spelllang=" . g:hugohelper_spell_check_lang
 endfun
 
-function! hugohelper#HugoHelperTitleToSlug()
+function! hugohelper#TitleToSlug()
     normal gg
     exe '/^title'
     normal! vi"y
@@ -13,29 +13,29 @@ function! hugohelper#HugoHelperTitleToSlug()
     exe 'normal! f-r f-r '
 endfun
 
-function! hugohelper#HugoHelperDraft()
+function! hugohelper#Draft()
     call s:set_key('draft', 'true')
 endfun
 
-function! hugohelper#HugoHelperUndraft()
+function! hugohelper#Undraft()
     call s:set_key('draft', 'false')
 endfun
 
-function! hugohelper#HugoHelperDateIsNow()
+function! hugohelper#DateIsNow()
     call s:set_key('date', s:hugo_now())
 endfun
 
-function! hugohelper#HugoHelperLastmodIsNow()
+function! hugohelper#LastmodIsNow()
     call s:set_key('lastmod', s:hugo_now())
 endfun
 
-function! hugohelper#HugoHelperHighlight(language)
+function! hugohelper#Highlight(language)
     normal! I{{< highlight language_placeholder >}}
     exe 's/language_placeholder/' . a:language . '/'
     normal! o{{< /highlight >}}
 endfun
 
-function! hugohelper#HugoHelperLink(link)
+function! hugohelper#Link(link)
     let l:selection = s:get_visual_selection()
     exe ':s/\%V\(.*\)\%V\(.\)/[\0]/'
     exe "normal! gv\ef]a(link_placeholder)\e"
