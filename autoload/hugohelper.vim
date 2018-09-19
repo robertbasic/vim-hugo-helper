@@ -13,18 +13,18 @@ function! hugohelper#HugoHelperTitleToSlug()
     exe 'normal! f-r f-r '
 endfun
 
+function! s:yaml_set_key(key, value)
+    " Assume yaml mode has been detected, which means line 1 is the starting
+    " --- marker. Search for the key only in the range of the yaml markers.
+    exe '1;/---/substitute/^' . a:key . '\s*:.*/' . a:key . ': ' . a:value
+endfun
+
 function! hugohelper#HugoHelperDraft()
     let l:format = s:front_matter_format()
     if l:format == 'toml'
         exe 'g/^draft\s*=/s/false/true'
     elseif l:format == 'yaml'
-        " YAML supports several boolean symbols: Yes, No, Y, N, Off, On, True, False, and
-        " and is case insensitive.
-        " http://yaml.org/refcard.html
-        exe 'silent! g/^draft\s*:/s/false/true/i'
-        exe 'silent! g/^draft\s*:/s/no/yes/i'
-        exe 'silent! g/^draft\s*:/s/off/on/i'
-        exe 'silent! g/^draft\s*:\s*n\s*/s/n/y/i'
+        call s:yaml_set_key('draft', 'true')
     endif
 endfun
 
@@ -33,14 +33,14 @@ function! hugohelper#HugoHelperUndraft()
     if l:format == 'toml'
         exe 'g/^draft\s*=/s/true/false'
     elseif l:format == 'yaml'
-        " YAML supports several boolean symbols: Yes, No, Y, N, Off, On, True, False, and
-        " and is case insensitive.
-        " http://yaml.org/refcard.html
-        exe 'silent! g/^draft\s*:/s/true/false/i'
-        exe 'silent! g/^draft\s*:/s/yes/no/i'
-        exe 'silent! g/^draft\s*:/s/on/off/i'
-        exe 'silent! g/^draft\s*:\s*y\s*/s/y/n/i'
+        call s:yaml_set_key('draft', 'false')
     endif
+endfun
+
+function! s:hugo_now()
+    " Contrust a time string using the format: 2018-09-18T19:41:32-07:00
+    let l:time = strftime("%FT%T%z")
+    return l:time[:-3] . ':' . l:time[-2:]
 endfun
 
 function! s:date_is_now(key)
@@ -48,11 +48,10 @@ function! s:date_is_now(key)
     if l:format == 'toml'
         exe 'g/^' . a:key . '\s*=.*/s//\=strftime("%FT%T%z")/'
         exe 'normal! I' . a:key . ' = '
+        normal! $2ha:
     elseif l:format == 'yaml'
-        exe 'g/^' . a:key . '\s*:.*/s//\=strftime("%FT%T%z")/'
-        exe 'normal! I' . a:key . ': '
+        call s:yaml_set_key(a:key, s:hugo_now())
     endif
-    normal! $2ha:
 endfun
 
 function! hugohelper#HugoHelperDateIsNow()
