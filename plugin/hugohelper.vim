@@ -56,7 +56,9 @@ augroup end
 " Update lastmod on save.
 function! s:UpdateLastMod()
     if s:ShouldUpdateLastMod()
+        let save_cursor = getcurpos()
         call hugohelper#LastmodIsNow()
+        call setpos('.', save_cursor)
     endif
 endfunction
 
