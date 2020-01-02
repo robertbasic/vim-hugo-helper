@@ -13,6 +13,12 @@ function! hugohelper#TitleToSlug()
     exe 'normal! f-r f-r '
 endfun
 
+function! hugohelper#TitleCase()
+    normal gg
+    exe '/^title'
+    normal! vi"u~
+endfun
+
 function! hugohelper#Draft()
     call s:set_key('draft', 'true')
 endfun
