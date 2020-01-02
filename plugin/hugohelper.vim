@@ -32,6 +32,7 @@ command! -nargs=0 HugoHelperUndraft call hugohelper#Undraft()
 command! -nargs=0 HugoHelperDateIsNow call hugohelper#DateIsNow()
 command! -nargs=0 HugoHelperLastmodIsNow call hugohelper#LastmodIsNow()
 command! -nargs=0 HugoHelperTitleToSlug call hugohelper#TitleToSlug()
+command! -nargs=0 HugoHelperTitleCase call hugohelper#TitleCase()
 command! -nargs=1 HugoHelperHighlight call hugohelper#Highlight(<f-args>)
 command! -range -nargs=1 HugoHelperLink call hugohelper#Link(<f-args>)
 
