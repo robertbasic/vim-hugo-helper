@@ -59,7 +59,7 @@ function! hugohelper#HasFrontMatter()
 endfun
 
 function! s:get_visual_selection()
-    " From http://stackoverflow.com/a/6271254/794380
+    " From https://stackoverflow.com/a/6271254/794380
     let [lnum1, col1] = getpos("'<")[1:2]
     let [lnum2, col2] = getpos("'>")[1:2]
     let lines = getline(lnum1, lnum2)

@@ -18,7 +18,7 @@ if !exists('g:hugohelper_content_dir')
 endif
 
 if !exists('g:hugohelper_site_config')
-    " List of site configuration files vim-hugo-helper uses to detemine
+    " List of site configuration files vim-hugo-helper uses to determine
     " the root of the hugo site.
     " For more information, see: https://gohugo.io/getting-started/configuration/
     let g:hugohelper_site_config = [ 'config.toml', 'config.yaml', 'config.json' ]
